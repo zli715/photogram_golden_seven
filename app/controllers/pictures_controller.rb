@@ -14,7 +14,7 @@ class PicturesController < ApplicationController
 
     @current_count = Photo.count
 
-    render("pic_templates/create_row.html.erb")
+    redirect_to("http://localhost:3000/photos")
   end
 
   def index
@@ -42,12 +42,26 @@ class PicturesController < ApplicationController
   end
 
   def update_row
-      @my_photo = Photo.find(params["le_id"])
-    render("pic_templates/update_row.html.erb")
+    p = Photo.find(params["le_id"])
+
+    p.source = params[:source]
+    p.caption = params[:caption]
+
+    p.save
+
+    @id = p.id
+
+    redirect_to("/photos/#{@id}")
   end
 
   def destroy_row
-    render("pic_templates/destroy_row.html.erb")
+
+    p = Photo.find(params[:da_id])
+    p.destroy
+
+    @remaining_count = Photo.count
+
+    redirect_to("/photos")
   end
 
 end
